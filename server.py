@@ -46,7 +46,15 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    availablePlaces = int(competition['numberOfPlaces'])
+
+    # If user wants more places than are available: error message
+    if placesRequired > availablePlaces:
+        flash(f"You cannot redeem more places than available. You requested {placesRequired} but only {availablePlaces} are left.")
+        return render_template('welcome.html', club=club, competitions=competitions)
+
+    # Else: user can book places
+    competition['numberOfPlaces'] = availablePlaces - placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
