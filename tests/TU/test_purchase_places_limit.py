@@ -10,7 +10,7 @@ def test_reservation_above_12_places(client):
     data = {
         'competition': 'Spring Festival',
         'club': 'Simply Lift',
-        'places': '1'
+        'places': '13'
     }
     response = client.post('/purchasePlaces', data=data, follow_redirects=True)
     assert b"You cannot book more than 12 places" in response.data or b"error" in response.data.lower()
