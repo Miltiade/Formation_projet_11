@@ -9,7 +9,7 @@ def client():
 def test_points_deduction_after_booking(client):
     # Récupérer le club et points initiaux
     club_name = 'Simply Lift'
-    competition_name = 'Winter Wonderland'
+    competition_name = 'Spring Festival'
     places_to_book = '3'
 
     # Trouver les points initiaux du club
