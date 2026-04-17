@@ -1,3 +1,11 @@
+import pytest
+from server import app
+
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
+
 def test_booking_future_competition(client):
     data = {
         'competition': 'Winter Wonderland',  # compétition dans le futur ou récente selon vos données
