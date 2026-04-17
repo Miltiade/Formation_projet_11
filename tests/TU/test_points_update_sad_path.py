@@ -27,7 +27,7 @@ def test_points_not_deducted_after_booking(client):
     assert b'Great-booking complete!' in response.data
 
     # Recharger le club pour voir ses points après réservation
-    club_after = [c for c in app.clubs if c['name'] == club_name][0]
+    club_after = [c for c in clubs if c['name'] == club_name][0]
     points_after = int(club_after['points'])
 
     # Test sad path : les points n’ont PAS changé -> bug confirmé
