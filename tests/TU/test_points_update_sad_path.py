@@ -1,5 +1,6 @@
 import pytest
 from server import app
+from server import app, clubs, competitions
 
 @pytest.fixture
 def client():
@@ -12,7 +13,7 @@ def test_points_not_deducted_after_booking(client):
     places_to_book = '2'
 
     # Récupération des points initiaux du club
-    club = [c for c in app.clubs if c['name'] == club_name][0]
+    club = [c for c in clubs if c['name'] == club_name][0]
     initial_points = int(club['points'])
 
     # Effectuer la réservation (POST)
