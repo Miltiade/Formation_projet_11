@@ -38,6 +38,8 @@ def showSummary():
         return redirect(url_for('index'))
 
     return render_template('welcome.html',club=club,competitions=competitions)
+    club = [club for club in clubs if club['email'] == request.form['email']][0]
+    return render_template('welcome.html', club=club, clubs=clubs, competitions=competitions) # includes all clubs' data
 
 
 @app.route('/book/<competition>/<club>')
