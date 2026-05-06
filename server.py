@@ -1,10 +1,7 @@
 import json
 from flask import Flask,render_template,request,redirect,flash,url_for
-<<<<<<< HEAD
 from app_utils import find_club_by_email
-=======
 from datetime import datetime
->>>>>>> issue#5/booking-past-competitions
 
 
 def loadClubs():
