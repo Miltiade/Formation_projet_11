@@ -1,6 +1,10 @@
 import json
 from flask import Flask,render_template,request,redirect,flash,url_for
+<<<<<<< HEAD
 from app_utils import find_club_by_email
+=======
+from datetime import datetime
+>>>>>>> issue#5/booking-past-competitions
 
 
 def loadClubs():
@@ -63,6 +67,16 @@ def purchasePlaces():
         flash("You cannot book more than 12 places")
         return render_template('welcome.html', club=club, competition=competition)
     
+
+    # Convertir la date de la compétition en datetime
+    competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
+    now = datetime.now()
+
+    # Bloquer si compétition passée
+    if competition_date < now:
+        flash("You cannot book places for past competitions")
+        return render_template('booking.html', club=club, competition=competition)
+
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     club['points'] = str(club_points - placesRequired)
     availablePlaces = int(competition['numberOfPlaces'])
