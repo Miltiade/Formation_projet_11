@@ -35,8 +35,6 @@ def showSummary():
         return redirect(url_for('index'))
 
     return render_template('welcome.html',club=club,competitions=competitions)
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html', club=club, clubs=clubs, competitions=competitions) # includes all clubs' data
 
 
 @app.route('/book/<competition>/<club>')
@@ -56,6 +54,19 @@ def purchasePlaces():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
     club_points = int(club['points'])
+    availablePlaces = int(competition['numberOfPlaces'])
+
+
+    # Convertir la date de la compétition en datetime
+    competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
+    now = datetime.now()
+
+    # Bloquer si compétition passée
+    if competition_date < now:
+        flash("You cannot book places for past competitions")
+        return render_template('booking.html', club=club, competition=competition)
+
+
 
     if placesRequired > club_points:
         flash('Error: You cannot use more points than you have.')
@@ -67,19 +78,6 @@ def purchasePlaces():
         return render_template('welcome.html', club=club, competition=competition)
     
 
-    # Convertir la date de la compétition en datetime
-    competition_date = datetime.strptime(competition['date'], '%Y-%m-%d %H:%M:%S')
-    now = datetime.now()
-
-    # Bloquer si compétition passée
-    if competition_date < now:
-        flash("You cannot book places for past competitions")
-        return render_template('booking.html', club=club, competition=competition)
-
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    club['points'] = str(club_points - placesRequired)
-    availablePlaces = int(competition['numberOfPlaces'])
-
     # If user wants more places than are available: error message
     if placesRequired > availablePlaces:
         flash(f"You cannot redeem more places than available. You requested {placesRequired} but only {availablePlaces} are left.")
@@ -88,11 +86,11 @@ def purchasePlaces():
     # Else: user can book places
     competition['numberOfPlaces'] = availablePlaces - placesRequired
     club['points'] = int(club['points']) - placesRequired # Update club's points balance
+
+
+
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
-
-
-# TODO: Add route for points display
 
 
 @app.route('/logout')
