@@ -34,7 +34,9 @@ def showSummary():
         flash("Sorry, that email was not found.")
         return redirect(url_for('index'))
 
-    return render_template('welcome.html',club=club,competitions=competitions)
+    return render_template('welcome.html', club=club, clubs=clubs, competitions=competitions) # includes all clubs' data
+
+    
 
 
 @app.route('/book/<competition>/<club>')

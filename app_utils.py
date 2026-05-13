@@ -12,3 +12,5 @@ def find_club_by_email(email):
         return matching[0]
     else:
         raise ValueError("Email non trouvé")
+
+# club = [club for club in clubs if club['email'] == request.form['email']][0]
