@@ -31,7 +31,7 @@ def showSummary():
     try:
         club = find_club_by_email(request.form['email'])
     except ValueError:
-        flash("Sorry, that email wasn't found.")
+        flash("Sorry, that email was not found.")
         return redirect(url_for('index'))
 
     return render_template('welcome.html',club=club,competitions=competitions)
