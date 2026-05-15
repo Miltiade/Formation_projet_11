@@ -37,11 +37,11 @@ def test_points_usage_limit(client):
 
 # Issue #282 : limiter réservations au nombre de places disponibles par compétition
 def test_book_limit_competition_places(client):
-    # tenter de réserver plus de places que dispo dans competition "Fall Classic" (has 13 places)
+    # tenter de réserver plus de places que dispo dans competition "Winter Wonderland" (has 1 place)
     data = {
         'club': "Simply Lift",
-        'competition': "Fall Classic",
-        'places': '20'
+        'competition': "Winter Wonderland",
+        'places': '6'
     }
     response = client.post('/purchasePlaces', data=data, follow_redirects=True)
     expected_message = b"You cannot redeem more places than available"
