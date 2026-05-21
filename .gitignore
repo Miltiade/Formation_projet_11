@@ -6,3 +6,4 @@ lib
 __pycache__
 export.py
 export_projet.md
+.coverage
