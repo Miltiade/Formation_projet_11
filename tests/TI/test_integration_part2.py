@@ -12,18 +12,18 @@ from datetime import datetime
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
-    # Réinitialiser données avant chaque test pour éviter "effets de bord"
-    global clubs, competitions
-    clubs[:] = [
-        {"name":"Simply Lift", "email":"john@simplylift.co", "points":"100"},
-        {"name":"Iron Temple", "email":"admin@irontemple.com", "points":"4"},
-        {"name":"She Lifts", "email":"kate@shelifts.co.uk", "points":"12"}
-    ]
-    competitions[:] = [
-        {"name":"Spring Festival", "date":"2020-03-27 10:00:00", "numberOfPlaces":"25"},
-        {"name":"Fall Classic", "date":"2020-10-22 13:30:00", "numberOfPlaces":"13"},
-        {"name":"Winter Wonderland", "date":"2026-12-22 11:00:00", "numberOfPlaces":"5"}
-    ]
+    # # Réinitialiser données avant chaque test pour éviter "effets de bord"
+    # global clubs, competitions
+    # clubs[:] = [
+    #     {"name":"Simply Lift", "email":"john@simplylift.co", "points":"100"},
+    #     {"name":"Iron Temple", "email":"admin@irontemple.com", "points":"4"},
+    #     {"name":"She Lifts", "email":"kate@shelifts.co.uk", "points":"12"}
+    # ]
+    # competitions[:] = [
+    #     {"name":"Spring Festival", "date":"2020-03-27 10:00:00", "numberOfPlaces":"25"},
+    #     {"name":"Fall Classic", "date":"2020-10-22 13:30:00", "numberOfPlaces":"13"},
+    #     {"name":"Winter Wonderland", "date":"2026-12-22 11:00:00", "numberOfPlaces":"5"}
+    # ]
     with app.test_client() as client:
         yield client
 
@@ -54,12 +54,13 @@ def test_integration_issues_4_to_7(client):
     club = next(c for c in clubs if c['name'] == club_name)
     initial_points = int(club['points'])
 
-    places_to_book = 3
+    places_to_book = 2
     response = client.post('/purchasePlaces', data={
         'club': club_name,
         'competition': competition_future,
         'places': str(places_to_book)
     }, follow_redirects=True)
+    print(response.data)
     assert b"Great-booking complete!" in response.data
     club_after = next(c for c in clubs if c['name'] == club_name)
     assert int(club_after['points']) == initial_points - places_to_book

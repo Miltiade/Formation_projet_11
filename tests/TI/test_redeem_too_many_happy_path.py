@@ -11,7 +11,7 @@ def client():
 
 def test_purchase_places_happy_path(client):
     club_name = "Iron Temple"  # 4 points disponibles
-    competition_name = "Spring Festival"  # 25 places disponibles
+    competition_name = "Fall Classic"  # 13 places disponibles
     places_to_book = 3  # Inférieur ou égal aux points du club
     
     response = client.post('/purchasePlaces', data={
@@ -21,6 +21,7 @@ def test_purchase_places_happy_path(client):
     }, follow_redirects=True)
     
     # Vérifie que la réservation a abouti (message de succès attendu)
+    print(response.data)
     assert b'Great-booking complete!' in response.data
     
     # Optionnel : vérifiez que le nombre de places de la compétition ait diminué correctement

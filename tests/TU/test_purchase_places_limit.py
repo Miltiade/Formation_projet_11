@@ -8,18 +8,20 @@ def client():
 
 def test_reservation_above_12_places(client):
     data = {
-        'competition': 'Spring Festival',
+        'competition': 'Fall Classic',
         'club': 'Simply Lift',
         'places': '13'
     }
     response = client.post('/purchasePlaces', data=data, follow_redirects=True)
+    print(response.data)
     assert b"You cannot book more than 12 places" in response.data or b"error" in response.data.lower()
 
 def test_reservation_up_to_12_places(client):
     data = {
-        'competition': 'Spring Festival',
+        'competition': 'Fall Classic',
         'club': 'Simply Lift',
         'places': '12'
     }
     response = client.post('/purchasePlaces', data=data, follow_redirects=True)
+    print(response.data)
     assert b"Great-booking complete!" in response.data

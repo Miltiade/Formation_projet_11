@@ -12,7 +12,7 @@ def client():
 def test_purchase_places_exceeds_points(client):
     # Données de test
     club_name = "Iron Temple"  # a 4 points
-    competition_name = "Spring Festival"  # 25 places disponibles
+    competition_name = "Fall Classic"  # 13 places disponibles
     places_to_book = 10  # Supérieur aux points du club => bug reproduit
     
     # Simule un POST vers /purchasePlaces

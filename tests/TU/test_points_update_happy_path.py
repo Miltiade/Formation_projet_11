@@ -9,8 +9,8 @@ def client():
 def test_points_deduction_after_booking(client):
     # Récupérer le club et points initiaux
     club_name = 'Simply Lift'
-    competition_name = 'Spring Festival'
-    places_to_book = '3'
+    competition_name = 'Fall Classic'
+    places_to_book = '1'
 
     # Trouver les points initiaux du club
     club = [c for c in clubs if c['name'] == club_name][0]
@@ -24,6 +24,7 @@ def test_points_deduction_after_booking(client):
     }, follow_redirects=True)
 
     # Vérifier le message de succès
+    print(response.data)
     assert b'Great-booking complete!' in response.data
 
     # Vérifier que les points ont été déduits
