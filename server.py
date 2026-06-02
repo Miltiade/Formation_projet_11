@@ -2,7 +2,10 @@ import json
 from flask import Flask,render_template,request,redirect,flash,url_for
 from app_utils import find_club_by_email
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
+load_dotenv()  # Charge les variables définies dans .env
 
 def loadClubs():
     with open('clubs.json') as c:
@@ -17,7 +20,7 @@ def loadCompetitions():
 
 
 app = Flask(__name__)
-app.secret_key = 'something_special'
+app.secret_key = os.environ.get('SECRET_KEY', 'dev_secret_key')
 
 competitions = loadCompetitions()
 clubs = loadClubs()

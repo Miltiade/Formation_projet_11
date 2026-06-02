@@ -7,3 +7,4 @@ __pycache__
 export.py
 export_projet.md
 .coverage
+.env
