@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Points Overview | GUDLFT</title>
+</head>
+<body>
+    <h1>Points Summary for All Clubs</h1>
+    <ul>
+        {% for club in clubs %}
+            <li>{{ club['name'] }} : {{ club['points'] }} points</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

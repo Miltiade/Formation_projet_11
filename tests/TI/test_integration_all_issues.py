@@ -1,4 +1,7 @@
 import pytest
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from server import app, clubs, competitions
 from datetime import datetime
 
@@ -87,9 +90,18 @@ def test_points_update_not_reflected(client):
     club_after = next(c for c in clubs if c['name'] == club_name)
     assert int(club_after['points']) == initial_points - places_to_book
 
-# Issue #7 : afficher le solde des points de tous les clubs après connexion
-def test_points_display_board(client):
+# Affichage solde des points de tous les clubs dans welcome.html ---
+def test_private_all_points_display(client):
     response = client.post('/showSummary', data={'email': 'john@simplylift.co'}, follow_redirects=True)
+    # On vérifie que le nom et le point de chaque club apparaissent dans la page
+    for c in clubs:
+        assert c['name'].encode() in response.data
+        assert str(c['points']).encode() in response.data
+    
+# --- Issue 7 : affichage public solde des points de tous les clubs dans page dédiée ---
+def test_public_points_page_accessible(client):
+    response = client.get('/points')
+    assert response.status_code == 200
     for c in clubs:
         assert c['name'].encode() in response.data
         assert str(c['points']).encode() in response.data

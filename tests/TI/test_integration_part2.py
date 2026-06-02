@@ -2,10 +2,14 @@
 Issue 4 (limite 12 places) : tenter de réserver > 12 places → vérifier flash / message d’erreur.
 Issue 5 (réservation compétition passée) : réserver dans compétition datée avant aujourd’hui → message d’erreur.
 Issue 6 (points mis à jour) : réserver N places → vérifier diminution correspondante des points du club.
-Issue 7 (affichage points tous clubs) : une fois connecté, vérifier dans la page de résumé que les points des clubs sont affichés.
+Issue 7 (affichage points tous clubs) : sans connexion, vérifier dans la page de résumé que les points des clubs sont affichés.
 """
 
 import pytest
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+from server import app, clubs, competitions
 from server import app, clubs, competitions
 from datetime import datetime
 
@@ -65,9 +69,16 @@ def test_integration_issues_4_to_7(client):
     club_after = next(c for c in clubs if c['name'] == club_name)
     assert int(club_after['points']) == initial_points - places_to_book
 
-    # --- Issue 7 : affichage solde des points de tous les clubs dans page de résumé ---
+    # Affichage solde des points de tous les clubs dans welcome.html ---
     response = client.post('/showSummary', data={'email': 'john@simplylift.co'}, follow_redirects=True)
     # On vérifie que le nom et le point de chaque club apparaissent dans la page
+    for c in clubs:
+        assert c['name'].encode() in response.data
+        assert str(c['points']).encode() in response.data
+    
+    # --- Issue 7 : affichage public solde des points de tous les clubs dans page dédiée ---
+    response = client.get('/points')
+    assert response.status_code == 200
     for c in clubs:
         assert c['name'].encode() in response.data
         assert str(c['points']).encode() in response.data
